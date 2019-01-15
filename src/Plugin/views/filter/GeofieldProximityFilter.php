@@ -309,19 +309,19 @@ class GeofieldProximityFilter extends NumericFilter {
       '#tree' => TRUE,
     ];
 
+    $units_description = '';
+    $user_input = $form_state->getUserInput();
+
     // We have to make some choices when creating this as an exposed
     // filter form. For example, if the operator is locked and thus
     // not rendered, we can't render dependencies; instead we only
     // render the form items we need.
     $which = 'all';
-    if (!empty($form['operator'])) {
-      $source = ':input[name="options[operator]"]';
-    }
+    $source = !empty($form['operator']) ? ':input[name="options[operator]"]' : '';
 
     if ($exposed = $form_state->get('exposed')) {
       $identifier = $this->options['expose']['identifier'];
 
-      $user_input = $form_state->getUserInput();
       if (!isset($user_input[$identifier]) || !is_array($user_input[$identifier])) {
         $user_input[$identifier] = [];
       }
@@ -352,7 +352,7 @@ class GeofieldProximityFilter extends NumericFilter {
         $form['value']['value']['#attributes']['placeholder'] = $this->options['expose']['placeholder'];
       }
 
-      if ($exposed && !isset($user_input[$identifier]['value'])) {
+      if ($exposed && isset($identifier) && !isset($user_input[$identifier]['value'])) {
         $user_input[$identifier]['value'] = $this->value['value'];
         $form_state->setUserInput($user_input);
       }
@@ -404,10 +404,10 @@ class GeofieldProximityFilter extends NumericFilter {
         $form['value']['min'] += $states;
         $form['value']['max'] += $states;
       }
-      if ($exposed && !isset($user_input[$identifier]['min'])) {
+      if ($exposed && isset($identifier) && isset($identifier) && !isset($user_input[$identifier]['min'])) {
         $user_input[$identifier]['min'] = $this->value['min'];
       }
-      if ($exposed && !isset($user_input[$identifier]['max'])) {
+      if ($exposed && isset($identifier) && !isset($user_input[$identifier]['max'])) {
         $user_input[$identifier]['max'] = $this->value['max'];
       }
 
@@ -421,7 +421,7 @@ class GeofieldProximityFilter extends NumericFilter {
     }
 
     // Build the specific Geofield Proximity Form Elements.
-    if ($exposed) {
+    if ($exposed && isset($identifier)) {
       $form['value']['#type'] = 'fieldset';
       $form['value']['source_configuration'] = [
         '#type' => 'container',
@@ -429,7 +429,7 @@ class GeofieldProximityFilter extends NumericFilter {
 
       try {
         $source_plugin_id = $this->options['source'];
-        $source_plugin_configuration = isset($user_input[$identifier]['origin']) ? $user_input[$identifier] : $this->options['source_configuration'];
+        $source_plugin_configuration = isset($identifier) && isset($user_input[$identifier]['origin']) ? $user_input[$identifier] : $this->options['source_configuration'];
 
         /** @var \Drupal\geofield\Plugin\GeofieldProximitySourceInterface $source_plugin */
         $source_plugin = $this->proximitySourceManager->createInstance($source_plugin_id, $source_plugin_configuration);
