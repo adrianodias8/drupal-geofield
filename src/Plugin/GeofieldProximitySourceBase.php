@@ -11,7 +11,7 @@ use Drupal\geofield\Exception\ProximityUnavailableException;
 use Drupal\views\Plugin\views\HandlerBase;
 
 /**
- * Base class for Geofield Proximity plugins.
+ * Base class for Geofield Proximity Source plugins.
  */
 abstract class GeofieldProximitySourceBase extends PluginBase implements GeofieldProximitySourceInterface {
 
