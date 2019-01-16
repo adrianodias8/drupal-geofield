@@ -259,6 +259,7 @@ class GeofieldProximityFilter extends NumericFilter {
         '#markup' => $this->sourcePlugin->getPluginDefinition()['description'],
         '#weight' => -10,
       ];
+      $this->sourcePlugin->buildOptionsForm($form['source_configuration'], $form_state, ['source_configuration']);
     }
     catch (\Exception $e) {
       watchdog_exception('geofield', $e);
