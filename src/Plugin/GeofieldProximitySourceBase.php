@@ -173,7 +173,6 @@ abstract class GeofieldProximitySourceBase extends PluginBase implements Geofiel
     }
     catch (\Exception $e) {
       watchdog_exception('geofield', $e);
-      return NULL;
     }
   }
 
