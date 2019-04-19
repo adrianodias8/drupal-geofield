@@ -136,10 +136,8 @@ abstract class GeofieldProximitySourceBase extends PluginBase implements Geofiel
     $radius = constant($this->units);
 
     $origin = $this->getOrigin();
-    if (empty($origin) || !is_numeric($origin['lat']) || !is_numeric($origin['lon'])) {
-      throw new ProximityUnavailableException($this->t('@proximity_handler not able to get the Proximity value, due to invalid Origin', [
-        '@proximity_handler' => get_class($this),
-      ]));
+    if ($this->originIsValidButEmpty($origin)) {
+      return NULL;
     }
 
     // Convert degrees to radians.
