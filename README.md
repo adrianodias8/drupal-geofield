@@ -77,10 +77,10 @@ Drupal 8, based on Geofield
  it is possible to update/set its multiple values in the following way:
  
      // The location of the Empire State Building, in New York City (US)
-     $empire_location_lat_lon = [40.748441, -73.985664];
+     $empire_location_lon_lat = [-73.985664, 40.748441];
      
-     // Generate the WKT version of the point geometry: 'POINT (-73.985664 40.748441)'
-     $empire_location_wkt = \Drupal::service('geofield.wkt_generator')->wktBuildPoint($empire_location_lat_lon);
+     // Generate the WKT version of the point geometry: 'POINT (-73.985664 41.748441)'
+     $empire_location_wkt = \Drupal::service('geofield.wkt_generator')->wktBuildPoint($empire_location_lon_lat);
      
      // Generate the (first) geofield value in the proper format. 
      $geofield_point = [
