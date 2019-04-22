@@ -302,7 +302,6 @@ class GeofieldProximityFilter extends NumericFilter {
     parent::validateExposed($form, $form_state);
     $form_values = $form_state->getValues();
     $identifier = $this->options['expose']['identifier'];
-    $input_origin = isset($form_values[$identifier]['source_configuration']) ? $form_values[$identifier]['source_configuration']['origin'] : NULL;
 
     // Validate the Distance field.
     if (isset($form_values[$identifier]['value']) && (!empty($form_values[$identifier]['value']) && !is_numeric($form_values[$identifier]['value']))) {
@@ -315,8 +314,21 @@ class GeofieldProximityFilter extends NumericFilter {
       $form_state->setError($form[$identifier]['min'], t('The Min value should be smaller than the Max value.'));
     }
 
-    if (isset($input_origin) && $this->options['expose']['required'] == TRUE && $this->sourcePlugin->isEmptyLocation($input_origin['lat'], $input_origin['lon'])) {
-      $form_state->setError($form[$identifier]['source_configuration']['origin'], t('The Origin (Lat/Lon) is required'));
+    // Validate the Origin (not null) value, when the filter is required.
+    if ($this->options['expose']['required'] == TRUE) {
+      if (isset($form_values[$identifier]['source_configuration']['origin'])) {
+        $input_origin = $form_values[$identifier]['source_configuration']['origin'];
+        if ($this->sourcePlugin->isEmptyLocation($input_origin['lat'], $input_origin['lon'])) {
+          $form_state->setError($form[$identifier]['source_configuration']['origin'], t('The Origin (Lat/Lon) is required'));
+        }
+      }
+      elseif (isset($form_values[$identifier]['source_configuration']['origin_address'])) {
+        $input_address = $form_values[$identifier]['source_configuration']['origin_address'];
+        if (empty($input_address)) {
+          $form_state->setError($form[$identifier]['source_configuration']['origin_address'], t('The Origin Address is required'));
+        }
+      }
+
     }
   }
 
