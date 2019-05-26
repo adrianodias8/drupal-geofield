@@ -66,37 +66,37 @@ class GeofieldItem extends FieldItemBase {
         'lat' => [
           'type' => 'numeric',
           'precision' => 12,
-          'scale' => 10,
+          'scale' => 8,
           'not null' => FALSE,
         ],
         'lon' => [
           'type' => 'numeric',
           'precision' => 12,
-          'scale' => 10,
+          'scale' => 8,
           'not null' => FALSE,
         ],
         'left' => [
           'type' => 'numeric',
           'precision' => 12,
-          'scale' => 10,
+          'scale' => 8,
           'not null' => FALSE,
         ],
         'top' => [
           'type' => 'numeric',
           'precision' => 12,
-          'scale' => 10,
+          'scale' => 8,
           'not null' => FALSE,
         ],
         'right' => [
           'type' => 'numeric',
           'precision' => 12,
-          'scale' => 10,
+          'scale' => 8,
           'not null' => FALSE,
         ],
         'bottom' => [
           'type' => 'numeric',
           'precision' => 12,
-          'scale' => 10,
+          'scale' => 8,
           'not null' => FALSE,
         ],
         'geohash' => [
