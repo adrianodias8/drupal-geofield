@@ -25,7 +25,6 @@ class ClientLocationOriginFilter extends ManualOriginDefault {
    * {@inheritdoc}
    */
   public function buildOptionsForm(array &$form, FormStateInterface $form_state, array $options_parents, $is_exposed = FALSE) {
-
     $form['#attributes'] = [
       'class' => ['proximity-origin-client'],
     ];
@@ -42,6 +41,8 @@ class ClientLocationOriginFilter extends ManualOriginDefault {
         'class' => ['visually-hidden'],
       ],
     ];
+
+    $form['origin']['#attached']['library'][] = 'geofield/geolocation';
 
     // If it is a proximity filter context and IS NOT exposed, render origin
     // summary option.
@@ -61,8 +62,6 @@ class ClientLocationOriginFilter extends ManualOriginDefault {
 
     // If it IS exposed load the geolocation library.
     if ($is_exposed) {
-      $form['origin']['#attached']['library'][] = 'geofield/geolocation';
-
       // And eventually Render the Origin Summary.
       if (isset($this->configuration['origin_summary_flag']) && $this->configuration['origin_summary_flag']) {
         $form['origin_summary'] = [
