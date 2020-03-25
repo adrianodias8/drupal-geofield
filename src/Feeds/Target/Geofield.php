@@ -3,6 +3,7 @@
 namespace Drupal\geofield\Feeds\Target;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\feeds\Exception\EmptyFeedException;
@@ -17,7 +18,7 @@ use Drupal\feeds\Plugin\Type\Target\FieldTargetBase;
  *   field_types = {"geofield"}
  * )
  */
-class Geofield extends FieldTargetBase {
+class Geofield extends FieldTargetBase implements ContainerFactoryPluginInterface{
 
   /**
    * The Settings object or array.
