@@ -134,51 +134,51 @@ class GeofieldProximityFilter extends NumericFilter {
   public function operators() {
     $operators = [
       '<' => [
-        'title' => t('Is less than'),
+        'title' => $this->t('Is less than'),
         'method' => 'opSimple',
-        'short' => t('<'),
+        'short' => $this->t('<'),
         'values' => 1,
       ],
       '<=' => [
-        'title' => t('Is less than or equal to'),
+        'title' => $this->t('Is less than or equal to'),
         'method' => 'opSimple',
-        'short' => t('<='),
+        'short' => $this->t('<='),
         'values' => 1,
       ],
       '=' => [
-        'title' => t('Is equal to'),
+        'title' => $this->t('Is equal to'),
         'method' => 'opSimple',
-        'short' => t('='),
+        'short' => $this->t('='),
         'values' => 1,
       ],
       '!=' => [
-        'title' => t('Is not equal to'),
+        'title' => $this->t('Is not equal to'),
         'method' => 'opSimple',
-        'short' => t('!='),
+        'short' => $this->t('!='),
         'values' => 1,
       ],
       '>=' => [
-        'title' => t('Is greater than or equal to'),
+        'title' => $this->t('Is greater than or equal to'),
         'method' => 'opSimple',
-        'short' => t('>='),
+        'short' => $this->t('>='),
         'values' => 1,
       ],
       '>' => [
-        'title' => t('Is greater than'),
+        'title' => $this->t('Is greater than'),
         'method' => 'opSimple',
-        'short' => t('>'),
+        'short' => $this->t('>'),
         'values' => 1,
       ],
       'between' => [
-        'title' => t('Is between'),
+        'title' => $this->t('Is between'),
         'method' => 'opBetween',
-        'short' => t('between'),
+        'short' => $this->t('between'),
         'values' => 2,
       ],
       'not between' => [
-        'title' => t('Is not between'),
+        'title' => $this->t('Is not between'),
         'method' => 'opBetween',
-        'short' => t('not between'),
+        'short' => $this->t('not between'),
         'values' => 2,
       ],
     ];
@@ -272,7 +272,7 @@ class GeofieldProximityFilter extends NumericFilter {
 
     $form['source_configuration']['exposed_summary'] = [
       '#type' => 'checkbox',
-      '#title' => t('Expose Summary Description for the specific Proximity Filter Source'),
+      '#title' => $this->t('Expose Summary Description for the specific Proximity Filter Source'),
       '#default_value' => isset($user_input['options']['source_configuration']['exposed_summary']) ? $user_input['options']['source_configuration']['exposed_summary'] : $this->options['source_configuration']['exposed_summary'],
       '#states' => [
         'visible' => [
@@ -307,7 +307,7 @@ class GeofieldProximityFilter extends NumericFilter {
     }
     catch (\Exception $e) {
       watchdog_exception('geofield', $e);
-      $form_state->setErrorByName($form['source'], t("The Proximity Source couldn't be set due to: @error", [
+      $form_state->setErrorByName($form['source'], $this->t("The Proximity Source couldn't be set due to: @error", [
         '@error' => $e,
       ]));
     }
@@ -323,13 +323,13 @@ class GeofieldProximityFilter extends NumericFilter {
 
     // Validate the Distance field.
     if (isset($form_values[$identifier]['value']) && (!empty($form_values[$identifier]['value']) && !is_numeric($form_values[$identifier]['value']))) {
-      $form_state->setError($form[$identifier]['value'], t('The Distance value is not valid.'));
+      $form_state->setError($form[$identifier]['value'], $this->t('The Distance value is not valid.'));
     }
 
     // Validate the Min and Max values.
     if (isset($form_values[$identifier]['min']) && isset($form_values[$identifier]['max'])
       && ($form_values[$identifier]['min'] > $form_values[$identifier]['max'])) {
-      $form_state->setError($form[$identifier]['min'], t('The Min value should be smaller than the Max value.'));
+      $form_state->setError($form[$identifier]['min'], $this->t('The Min value should be smaller than the Max value.'));
     }
 
     // Validate the Origin (not null) value, when the filter is required.
@@ -337,13 +337,13 @@ class GeofieldProximityFilter extends NumericFilter {
       if (isset($form_values[$identifier]['source_configuration']['origin_address'])) {
         $input_address = $form_values[$identifier]['source_configuration']['origin_address'];
         if (empty($input_address)) {
-          $form_state->setError($form[$identifier]['source_configuration']['origin_address'], t('The Origin Address is required'));
+          $form_state->setError($form[$identifier]['source_configuration']['origin_address'], $this->t('The Origin Address is required'));
         }
       }
       elseif (isset($form_values[$identifier]['source_configuration']['origin'])) {
         $input_origin = $form_values[$identifier]['source_configuration']['origin'];
         if ($this->sourcePlugin->isEmptyLocation($input_origin['lat'], $input_origin['lon'])) {
-          $form_state->setError($form[$identifier]['source_configuration']['origin'], t('The Origin (Lat/Lon) is required'));
+          $form_state->setError($form[$identifier]['source_configuration']['origin'], $this->t('The Origin (Lat/Lon) is required'));
         }
       }
     }
@@ -376,7 +376,7 @@ class GeofieldProximityFilter extends NumericFilter {
       if (!isset($user_input[$identifier]) || !is_array($user_input[$identifier])) {
         $user_input[$identifier] = [];
       }
-      $units_description = t('Units: @units', [
+      $units_description = $this->t('Units: @units', [
         '@units' => isset($user_input['options']['units']) ? $this->geofieldRadiusOptions[$user_input['options']['units']] : $this->geofieldRadiusOptions[$this->options['units']],
       ]);
 
@@ -503,7 +503,7 @@ class GeofieldProximityFilter extends NumericFilter {
       }
       catch (\Exception $e) {
         watchdog_exception('geofield', $e);
-        $form_state->setErrorByName($form['value']['source_configuration'], t("The Proximity Source couldn't be set due to: @error", [
+        $form_state->setErrorByName($form['value']['source_configuration'], $this->t("The Proximity Source couldn't be set due to: @error", [
           '@error' => $e,
         ]));
       }
