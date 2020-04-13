@@ -118,7 +118,7 @@ class GeofieldProximityFilter extends NumericFilter {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static (
+    return new static(
       $configuration,
       $plugin_id,
       $plugin_definition,
@@ -196,9 +196,6 @@ class GeofieldProximityFilter extends NumericFilter {
 
     /** @var \Drupal\views\Plugin\views\query\Sql $query */
     $query = $this->query;
-    /** @var \Symfony\Component\HttpFoundation\Request $request */
-    $request = $this->request->getCurrentRequest();
-    $proximity_filter_get = $request->get($this->options['expose']['identifier']);
 
     try {
       /** @var \Drupal\geofield\Plugin\GeofieldProximitySourceInterface $source_plugin */
@@ -237,6 +234,10 @@ class GeofieldProximityFilter extends NumericFilter {
       !empty($this->value['max']) && is_numeric($this->value['max'])) {
       /** @var \Drupal\views\Plugin\views\query\Sql $query */
       $query = $this->query;
+      // Be sure to convert $options into array,
+      // as this method PhpDoc might expects $options to be an object.
+      $options = (array) $options;
+      /* @var array $options */
       $query->addWhereExpression($this->options['group'], geofield_haversine($options) . ' ' . strtoupper($this->operator) . ' ' . $this->value['min'] . ' AND ' . $this->value['max']);
     }
   }
@@ -249,6 +250,9 @@ class GeofieldProximityFilter extends NumericFilter {
     if (!empty($this->value['value']) && is_numeric($this->value['value'])) {
       /** @var \Drupal\views\Plugin\views\query\Sql $query */
       $query = $this->query;
+      // Be sure to convert $options into array,
+      // as this method PhpDoc might expects $options to be an object.
+      $options = (array) $options;
       $query->addWhereExpression($this->options['group'], geofield_haversine($options) . ' ' . $this->operator . ' ' . $this->value['value']);
       $this->value['value'];
     }
