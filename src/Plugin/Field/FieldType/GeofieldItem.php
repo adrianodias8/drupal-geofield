@@ -210,7 +210,7 @@ class GeofieldItem extends FieldItemBase {
       }
     }
     catch (\Exception $e) {
-      watchdog_exception('geofield_mising_data_exception', $e);
+      watchdog_exception('geofield get value exception', $e);
     }
     return TRUE;
   }
