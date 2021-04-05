@@ -58,6 +58,7 @@ class LatLonFormatter extends GeofieldDefaultFormatter {
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $elements = parent::settingsForm($form, $form_state);
+    unset($this->options['output_escape']);
 
     $elements['output_format'] = [
       '#title' => $this->t('Output Format'),
