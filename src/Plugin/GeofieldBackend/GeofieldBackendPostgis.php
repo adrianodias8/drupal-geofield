@@ -5,11 +5,14 @@ namespace Drupal\geofield\Plugin\GeofieldBackend;
 use Drupal\geofield\Plugin\GeofieldBackendBase;
 
 /**
- * Postgis backend for Geofield.
+ * PostgreSQL/PostGIS Backend for Geofield.
+ *
+ * Definition of a Geofield Backend storing values in EWKB Format, suitable for
+ * PostgreSQL/PostGIS,
  *
  * @GeofieldBackend(
  *   id = "geofield_backend_postgis",
- *   admin_label = @Translation("Geofield PostGIS Backend")
+ *   admin_label = @Translation("Geofield PostgreSQL/PostGIS Backend")
  * )
  */
 class GeofieldBackendPostgis extends GeofieldBackendBase {
@@ -18,11 +21,11 @@ class GeofieldBackendPostgis extends GeofieldBackendBase {
    * {@inheritdoc}
    */
   public function schema() {
-    return array(
+    return [
       'type' => 'geometry',
       'size' => 'big',
       'not null' => FALSE,
-    );
+    ];
   }
 
   /**
