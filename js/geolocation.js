@@ -90,8 +90,6 @@
       once('geofield_geolocation', '.proximity-origin-client').forEach(function (e) {
         latitudeInput = $(e).find('.geofield-lat').first();
         longitudeInput = $(e).find('.geofield-lon').first();
-        latitudeSpan = $(e).find('.geofield-lat-summary').first();
-        longitudeSpan = $(e).find('.geofield-lon-summary').first();
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(getClientOrigin);
         }

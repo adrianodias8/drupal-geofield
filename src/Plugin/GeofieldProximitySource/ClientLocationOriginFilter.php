@@ -39,41 +39,11 @@ class ClientLocationOriginFilter extends ManualOriginDefault {
         'lat' => '',
         'lon' => '',
       ],
-      '#attributes' => [
-        'class' => ['visually-hidden'],
-      ],
     ];
-
-    // If it is a proximity filter context and IS NOT exposed, render origin
-    // summary option.
-    if ($this->viewHandler->configuration['id'] == 'geofield_proximity_filter' && !$is_exposed) {
-
-      $form['origin_summary_flag'] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('Show the Client Origin coordinates as summary in the Exposed Form'),
-        '#default_value' => isset($this->configuration['origin_summary_flag']) ? $this->configuration['origin_summary_flag'] : TRUE,
-      ];
-    }
 
     // If it IS exposed load the geolocation library.
     if ($is_exposed) {
       $form['origin']['#attached']['library'][] = 'geofield/geolocation';
-
-      // And eventually Render the Origin Summary.
-      if (isset($this->configuration['origin_summary_flag']) && $this->configuration['origin_summary_flag']) {
-        $form['origin_summary'] = [
-          "#type" => 'html_tag',
-          "#tag" => 'div',
-          '#value' => $this->t('from Latitude: @lat and Longitude: @lon.', [
-            '@lat' => new FormattableMarkup('<span class="geofield-lat-summary">@lat</span>', [
-              '@lat' => $this->t('undefined'),
-            ]),
-            '@lon' => new FormattableMarkup('<span class="geofield-lon-summary">@lon</span>', [
-              '@lon' => $this->t('undefined'),
-            ]),
-          ]),
-        ];
-      }
     }
   }
 
