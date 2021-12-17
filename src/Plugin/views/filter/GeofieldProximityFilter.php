@@ -349,7 +349,6 @@ class GeofieldProximityFilter extends NumericFilter {
     parent::valueForm($form, $form_state);
 
     $form['value'] = [
-      '#type' => 'container',
       '#tree' => TRUE,
     ];
 
