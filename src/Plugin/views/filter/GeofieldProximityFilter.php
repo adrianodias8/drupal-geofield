@@ -62,13 +62,6 @@ class GeofieldProximityFilter extends NumericFilter {
 
     // Override some default settings from the NumericFilter.
     $options['operator'] = ['default' => '<='];
-    $options['value'] = [
-      'contains' => [
-        'min' => ['default' => ''],
-        'max' => ['default' => ''],
-        'value' => ['default' => ''],
-      ],
-    ];
 
     $options['units'] = ['default' => 'GEOFIELD_KILOMETERS'];
 
@@ -252,6 +245,7 @@ class GeofieldProximityFilter extends NumericFilter {
    * {@inheritdoc}
    */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
+    parent::buildOptionsForm($form, $form_state);
 
     $context = $this->pluginDefinition['plugin_type'];
 
@@ -287,7 +281,6 @@ class GeofieldProximityFilter extends NumericFilter {
     catch (\Exception $e) {
       watchdog_exception('geofield', $e);
     }
-    parent::buildOptionsForm($form, $form_state);
   }
 
   /**
