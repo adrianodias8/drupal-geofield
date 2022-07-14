@@ -338,18 +338,54 @@ class GeofieldProximityFilter extends NumericFilter {
     parent::validateExposed($form, $form_state);
     $form_values = $form_state->getValues();
     $identifier = $this->options['expose']['identifier'];
+    $which = in_array($form_values["field_geofield_proximity_op"], $this->operatorValues(2)) ? 'minmax' : 'value';
 
     // Validate the Distance field.
-    if (isset($form_values[$identifier]['value']) && (!empty($form_values[$identifier]['value']) && !is_numeric($form_values[$identifier]['value']))) {
-      $form_state->setError($form[$identifier]['value'], $this->t('The @value_label value is not valid.', [
+    if ($which !== 'minmax' && isset($form_values[$identifier]['value']) && (!empty($form_values[$identifier]['value']) && !is_numeric($form_values[$identifier]['value']))) {
+      $form_state->setError($form[$identifier . "_wrapper"][$identifier]['value'], $this->t('The @value_label value is not valid.', [
         '@value_label' => $this->valueLabel,
       ]));
     }
 
-    // Validate the Min and Max values.
-    if (isset($form_values[$identifier]['min']) && isset($form_values[$identifier]['max'])
+    // Validate the Distance field as positive value.
+    if ($which !== 'minmax' && isset($form_values[$identifier]['value']) && $form_values[$identifier]['value'] < 0) {
+      $form_state->setError($form[$identifier . "_wrapper"][$identifier]['value'], $this->t('The @value_label value should be positive.', [
+        '@value_label' => $this->valueLabel,
+      ]));
+    }
+
+    // Validate the Min value.
+    if ($which !== 'value' && isset($form_values[$identifier]['min']) && !is_numeric($form_values[$identifier]['min'])) {
+      $form_state->setError($form[$identifier . "_wrapper"][$identifier]['min'], $this->t('The @min_label value is not valid.', [
+        '@min_label' => $this->minLabel,
+      ]));
+    }
+
+    // Validate the Max value.
+    if ($which !== 'value' && isset($form_values[$identifier]['max']) && !is_numeric($form_values[$identifier]['max'])) {
+      $form_state->setError($form[$identifier . "_wrapper"][$identifier]['max'], $this->t('The @max_label value is not valid.', [
+        '@max_label' => $this->maxLabel,
+      ]));
+    }
+
+    // Validate the Min value as positive value.
+    if ($which !== 'value' && isset($form_values[$identifier]['min']) && $form_values[$identifier]['min'] < 0) {
+      $form_state->setError($form[$identifier . "_wrapper"][$identifier]['min'], $this->t('The @min_label value should be positive.', [
+        '@min_label' => $this->minLabel,
+      ]));
+    }
+
+    // Validate the Max value as positive value.
+    if ($which !== 'value' && isset($form_values[$identifier]['max']) && $form_values[$identifier]['max'] < 0) {
+      $form_state->setError($form[$identifier . "_wrapper"][$identifier]['max'], $this->t('The @max_label value should be positive.', [
+        '@max_label' => $this->maxLabel,
+      ]));
+    }
+
+    // Validate the Min and Max values relationship.
+    if ($which !== 'value' && isset($form_values[$identifier]['min']) && isset($form_values[$identifier]['max'])
       && ($form_values[$identifier]['min'] > $form_values[$identifier]['max'])) {
-      $form_state->setError($form[$identifier]['min'], $this->t('The @min_label value should be smaller than the @max_label value.', [
+      $form_state->setError($form[$identifier . "_wrapper"][$identifier]['min'], $this->t('The @min_label value should be smaller than the @max_label value.', [
         '@min_label' => $this->minLabel,
         '@max_label' => $this->maxLabel,
       ]));
@@ -360,7 +396,7 @@ class GeofieldProximityFilter extends NumericFilter {
       if (isset($form_values[$identifier]['source_configuration']['origin_address'])) {
         $input_address = $form_values[$identifier]['source_configuration']['origin_address'];
         if (empty($input_address)) {
-          $form_state->setError($form[$identifier]['source_configuration']['origin_address'], $this->t('The @origin_label Address is required', [
+          $form_state->setError($form[$identifier . "_wrapper"][$identifier]['source_configuration']['origin_address'], $this->t('The @origin_label Address is required', [
             '@origin_label' => $this->originLabel,
           ]));
         }
@@ -368,7 +404,7 @@ class GeofieldProximityFilter extends NumericFilter {
       elseif (isset($form_values[$identifier]['source_configuration']['origin'])) {
         $input_origin = $form_values[$identifier]['source_configuration']['origin'];
         if ($this->sourcePlugin->isEmptyLocation($input_origin['lat'], $input_origin['lon'])) {
-          $form_state->setError($form[$identifier]['source_configuration']['origin'], $this->t('The @origin_label (Lat/Lon) is required', [
+          $form_state->setError($form[$identifier . "_wrapper"][$identifier]['source_configuration']['origin'], $this->t('The @origin_label (Lat/Lon) is required', [
             '@origin_label' => $this->originLabel,
           ]));
         }
@@ -417,9 +453,7 @@ class GeofieldProximityFilter extends NumericFilter {
 
     if ($which == 'all' || $which == 'value') {
       $form['value']['value'] = [
-        '#type' => 'number',
-        '#min' => 0,
-        '#step' => 0.1,
+        '#type' => 'textfield',
         '#title' => $exposed && empty($source) ? $this->valueLabel . ' ' . $this->operator : (!$exposed ? $this->valueLabel : ''),
         '#size' => 30,
         '#default_value' => $this->value['value'],
@@ -446,9 +480,7 @@ class GeofieldProximityFilter extends NumericFilter {
 
     if ($which == 'all' || $which == 'minmax') {
       $form['value']['min'] = [
-        '#type' => 'number',
-        '#min' => 0,
-        '#step' => 0.1,
+        '#type' => 'textfield',
         '#title' => $exposed && empty($source) ? $this->valueLabel . ' ' . $this->operator . ' ' . $this->minLabel : (!$exposed ? $this->minLabel : ''),
         '#size' => 30,
         '#default_value' => $this->value['min'],
@@ -459,9 +491,7 @@ class GeofieldProximityFilter extends NumericFilter {
         $form['value']['min']['#attributes']['placeholder'] = $this->options['expose']['min_placeholder'];
       }
       $form['value']['max'] = [
-        '#type' => 'number',
-        '#min' => 0,
-        '#step' => 0.1,
+        '#type' => 'textfield',
         '#title' => $this->maxLabel,
         '#size' => 30,
         '#default_value' => $this->value['max'],
