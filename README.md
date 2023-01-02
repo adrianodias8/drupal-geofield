@@ -1,7 +1,10 @@
 # Geofield
 
-Geofield is an advanced module for storing, managing and representing dynamic Geographic data in Drupal.
-It supports all geo-types (points, lines, polygons, multi types geometries, etc.), and integrates with various Js Mapping Libraries (Google Maps, Leaflet, Open Layers, etc.) and advanced Geocoding / Reverse Geocoding functionalities, via many other Drupal Geo Mapping modules.
+Geofield is an advanced module for storing, managing and representing dynamic
+Geographic data in Drupal. It supports all geo-types (points, lines, polygons,
+multi types geometries, etc.), and integrates with various Js Mapping Libraries
+(Google Maps, Leaflet, etc.) and advanced Geocoding / Reverse Geocoding
+functionalities, via many other Drupal Geo Mapping modules.
 
 For a full description of the module, visit the
 [project page](https://www.drupal.org/project/geofield).
@@ -17,8 +20,15 @@ This module requires no modules outside of Drupal core.
 
 ## Installation
 
-Install as you would normally install a contributed Drupal module. For further
-information, see
+The Geofield module needs to be installed
+[using Composer](https://www.drupal.org/docs/develop/using-composer/using-composer-to-manage-drupal-site-dependencies),
+it means simply running the following command from your project root:
+
+__$ composer require drupal/geofield__
+
+This process will also download the required <a href="https://github.com/phayes/geoPHP" title="GeoPHP library" target="_blank" rel="nofollow">GeoPHP library</a> dependency,
+that will be sited in the /vendor folder.
+For further information, see
 [Installing Drupal Modules](https://www.drupal.org/docs/extending-drupal/installing-drupal-modules).
 
 
@@ -28,18 +38,30 @@ Once enabled the module it will be possible to add a "Geofield" field type to
 any entity type/bundle and then choose the preferred widget or formatter.
 
 
-## Mapping with Geofield
+## Advanced Mapping and Geocoding with Geofield
 
-It is possible to implement advanced Mapping and Geocoding functionalities
+It is possible to implement Advanced Mapping and Geocoding functionalities
 adding compatible and specialized modules for Drupal, such as:
 
-- [Geofield Map module](https://www.drupal.org/project/geofield_map)
-- [Leaflet module](https://www.drupal.org/project/leaflet)
-- [Leaflet Widget module](https://www.drupal.org/project/leaflet_widget)
-- [Geocoder](https://www.drupal.org/project/geocoder)
+- [Geofield Map](https://www.drupal.org/project/geofield_map): an advanced,
+complete and easy-to-use Geo Mapping solution that lets you manage the Geofield
+with an interactive Map both in back-end and in the front-end;
+- [Leaflet](https://www.drupal.org/project/leaflet): Drupal advanced integration
+with the Leaflet JS mapping library. Advanced features for creating and editing
+Points and Geometries Layers (Linestring, Polygon) so as for managing Leaflet
+Views styles and Formatters;
+- [Geocoder](https://www.drupal.org/project/geocoder): most advanced, complete
+and easy to use solution to process Geocode and Reverse Geocode operations on
+Drupal Entities;
+- [Address](https://www.drupal.org/project/address): Provides functionality for
+storing, validating and displaying international postal addresses;
+- [Search API Location](https://www.drupal.org/project/search_api_location):
+Adds geospatial-based searching to the Search API module;
+- etc. (others created in the wild of the Drupal community);
 
+## Api Notes
 
-## Geofield Schema
+### Geofield Schema
 
 Geofield fields contain nine columns of information about the geographic data
 that is stores. At its heart is the 'wkt' column where it stores the full
@@ -58,7 +80,7 @@ derived from the WKT column. Columns are as follows:
 ```
 
 
-## Save or Updated a Geofield programmatically
+### Save or Updated a Geofield programmatically
 
 To save or update programatically a Geofield (both single and multivalue) it is sufficient to pass the WKT values/geometries to the
 
@@ -94,7 +116,10 @@ it is possible to update/set its multiple values in the following way:
 
 ## Maintainers
 
+Drupal 8, 9,10:
 - Italo Mairo (itamair) - https://www.drupal.org/u/itamair
+
+Drupal 7:
 - Brandon Bergren (bdragon) - https://www.drupal.org/u/bdragon
 - Brandon Morrison (Brandonian) - https://www.drupal.org/u/brandonian
 - Patrick Hayes (phayes) - https://www.drupal.org/u/phayes
