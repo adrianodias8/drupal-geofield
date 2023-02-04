@@ -28,6 +28,6 @@
     "license": "GPL-2.0+",
     "minimum-stability": "dev",
     "require": {
-        "funiq/geophp": "^v2.0"
+        "itamair/geophp": "^1.3"
     }
 }
